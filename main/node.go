@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"mandatory-5/pb"
 	"mandatory-handin-5/pb"
 	"os"
 	"time"
@@ -21,6 +20,7 @@ type Node struct{
 	bid int32
 	highestbidder string
 	ongoingAuction bool
+	clients pb.ActionhouseClient
 }
 
 func main(){
@@ -35,6 +35,10 @@ func main(){
 func (n *Node) Bid(req *pb.Request) (ack *pb.acknowledge){
 	if !n.ongoingAuction{
 		return "No ongoing auctions"
+	}
+
+	if (pb.Request.UserId != ){
+
 	}
 	
 	if n.isBidBigger(req){
@@ -70,7 +74,7 @@ func (n *Node) Result() (){
 
 	return *pb.Outcome{
 		bid: n.bid,
-		clientname: n.highestbidder,
+		UserId: n.highestbidder,
 	}
 	
 }
