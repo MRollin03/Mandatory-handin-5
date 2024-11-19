@@ -2,33 +2,36 @@ syntax = "proto3";
 
 package mandatory5;
 
-import "google/protobuf/empty.proto";
 
 option go_package = "./pb";
 
 service Actionhouse{        //active replication
     rpc Bid (Request) returns (ack);
-    rpc Status (google.protobuf.Empty) returns (current);
-    rpc Result (google.protobuf.Empty) returns (outcome);
+    //rpc Status (google.protobuf.Empty) returns (current);
+    rpc Result (Empty) returns (outcome);
 }
+
+message Empty{}
 
 // The request message containing a bid.
 message Request {
     int32 bid = 1; 
-    int32 UserId = 2;
+    int32 userId = 2;
 }
 // The acknowledge message containing an ack from da server.
 message ack {
-    string ack = 1; 
+    string msg = 1; 
+    int32 userId = 2;
 }
 
+/*
 // The message containing current highest bid.
 message current {
     int32 bid = 1; 
-}
+}*/
 
-// The message containing final bid in auction.
+// The message containing final or current bid in auction.
 message outcome {
     int32 bid = 1; 
-    int32 UserId = 2;
+    int32 userId = 2;
 }

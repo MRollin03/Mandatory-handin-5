@@ -11,7 +11,6 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -21,7 +20,6 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	Actionhouse_Bid_FullMethodName    = "/mandatory5.Actionhouse/Bid"
-	Actionhouse_Status_FullMethodName = "/mandatory5.Actionhouse/Status"
 	Actionhouse_Result_FullMethodName = "/mandatory5.Actionhouse/Result"
 )
 
@@ -29,9 +27,9 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ActionhouseClient interface {
-	Bid(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Acknowledge, error)
-	Status(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Current, error)
-	Result(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Outcome, error)
+	Bid(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Ack, error)
+	// rpc Status (google.protobuf.Empty) returns (current);
+	Result(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Outcome, error)
 }
 
 type actionhouseClient struct {
@@ -42,9 +40,9 @@ func NewActionhouseClient(cc grpc.ClientConnInterface) ActionhouseClient {
 	return &actionhouseClient{cc}
 }
 
-func (c *actionhouseClient) Bid(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Acknowledge, error) {
+func (c *actionhouseClient) Bid(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Ack, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Acknowledge)
+	out := new(Ack)
 	err := c.cc.Invoke(ctx, Actionhouse_Bid_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -52,17 +50,7 @@ func (c *actionhouseClient) Bid(ctx context.Context, in *Request, opts ...grpc.C
 	return out, nil
 }
 
-func (c *actionhouseClient) Status(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Current, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Current)
-	err := c.cc.Invoke(ctx, Actionhouse_Status_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *actionhouseClient) Result(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Outcome, error) {
+func (c *actionhouseClient) Result(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Outcome, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Outcome)
 	err := c.cc.Invoke(ctx, Actionhouse_Result_FullMethodName, in, out, cOpts...)
@@ -76,9 +64,9 @@ func (c *actionhouseClient) Result(ctx context.Context, in *emptypb.Empty, opts 
 // All implementations must embed UnimplementedActionhouseServer
 // for forward compatibility.
 type ActionhouseServer interface {
-	Bid(context.Context, *Request) (*Acknowledge, error)
-	Status(context.Context, *emptypb.Empty) (*Current, error)
-	Result(context.Context, *emptypb.Empty) (*Outcome, error)
+	Bid(context.Context, *Request) (*Ack, error)
+	// rpc Status (google.protobuf.Empty) returns (current);
+	Result(context.Context, *Empty) (*Outcome, error)
 	mustEmbedUnimplementedActionhouseServer()
 }
 
@@ -89,13 +77,10 @@ type ActionhouseServer interface {
 // pointer dereference when methods are called.
 type UnimplementedActionhouseServer struct{}
 
-func (UnimplementedActionhouseServer) Bid(context.Context, *Request) (*Acknowledge, error) {
+func (UnimplementedActionhouseServer) Bid(context.Context, *Request) (*Ack, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Bid not implemented")
 }
-func (UnimplementedActionhouseServer) Status(context.Context, *emptypb.Empty) (*Current, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Status not implemented")
-}
-func (UnimplementedActionhouseServer) Result(context.Context, *emptypb.Empty) (*Outcome, error) {
+func (UnimplementedActionhouseServer) Result(context.Context, *Empty) (*Outcome, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Result not implemented")
 }
 func (UnimplementedActionhouseServer) mustEmbedUnimplementedActionhouseServer() {}
@@ -137,26 +122,8 @@ func _Actionhouse_Bid_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Actionhouse_Status_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ActionhouseServer).Status(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Actionhouse_Status_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ActionhouseServer).Status(ctx, req.(*emptypb.Empty))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Actionhouse_Result_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
+	in := new(Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -168,7 +135,7 @@ func _Actionhouse_Result_Handler(srv interface{}, ctx context.Context, dec func(
 		FullMethod: Actionhouse_Result_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ActionhouseServer).Result(ctx, req.(*emptypb.Empty))
+		return srv.(ActionhouseServer).Result(ctx, req.(*Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -183,10 +150,6 @@ var Actionhouse_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Bid",
 			Handler:    _Actionhouse_Bid_Handler,
-		},
-		{
-			MethodName: "Status",
-			Handler:    _Actionhouse_Status_Handler,
 		},
 		{
 			MethodName: "Result",
