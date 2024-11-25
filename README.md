@@ -33,6 +33,7 @@ Navigate to the Main Directory
 
 default port is 5001, meaning you can omit the flag that node.
 Our clients expect 3 servers with the address 5001, 5002, 5003.
+For test purposes an flag can be used -crash=True. This will make the node Crash if any request have been send by a client.
 
 ## 3. ''How to run the client''
 
