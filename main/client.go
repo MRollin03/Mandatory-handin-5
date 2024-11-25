@@ -51,6 +51,7 @@ func setbid(clients []pb.ActionhouseClient, bidVal int32) {
 	var successes int32
 
 	done := make(chan struct{}, Nnodes)
+	var result *pb.Ack;
 
 	for i := 0; i < Nnodes; i++ {
 		go func(client pb.ActionhouseClient, nodeID int) {
@@ -61,11 +62,12 @@ func setbid(clients []pb.ActionhouseClient, bidVal int32) {
 				UserId: int32(ID), // User ID is assigned by the server
 			})
 			if err != nil {
-				log.Printf("Error from node %d: %v\n", nodeID, err)
+				fmt.Sprint("Error from node %d: %v\n", nodeID, err)
 				errors++
 				return
 			}
 			successes++
+			result = res;
 			ID = int(res.UserId)
 		}(clients[i], i)
 	}
@@ -77,7 +79,8 @@ func setbid(clients []pb.ActionhouseClient, bidVal int32) {
 
 	// Determine the final outcome
 	if successes > 0 {
-		fmt.Println("Bid placed!")
+		fmt.Println(result.Msg)
+		
 	} else {
 		fmt.Println("Nodes failed.")
 	}
@@ -101,7 +104,7 @@ func getresult(clients []pb.ActionhouseClient) {
 			defer mu.Unlock() // Ensure thread-safe access to shared variables
 
 			if err != nil {
-				log.Printf("Error fetching results from node %d: %v", nodeID, err)
+				fmt.Sprintf("Error fetching results from node %d: %v", nodeID, err)
 				errors++
 				return
 			}
@@ -128,14 +131,14 @@ func getresult(clients []pb.ActionhouseClient) {
 	if successes > 0 {
 		fmt.Print(result)
 	} else {
-		fmt.Println("Nodes failed.")
+		log.Println("Nodes failed.")
 	}
 }
 
 
 func CommandlineInput(clients []pb.ActionhouseClient) {
 	scanner := bufio.NewScanner(os.Stdin)
-	fmt.Print("Enter command: ")
+	log.Print("Enter command: ")
 	for {
 		if scanner.Scan() {
 			scanText := scanner.Text()
@@ -158,6 +161,6 @@ func CommandlineInput(clients []pb.ActionhouseClient) {
 		}
 		//panic("error ignored")
 		time.Sleep(time.Millisecond * 10);
-		fmt.Print("Enter command: ")
+		log.Print("Enter command: ")
 	}
 }

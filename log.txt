@@ -42,23 +42,18 @@ User ID = 1
 Wilkommen to ze bidding hall.
 2024/11/25 15:20:32 Enter command: 
 bid 1 
-2024/11/25 15:20:38 Error from node 1: rpc error: code = Unavailable desc = error reading from server: read tcp 127.0.0.1:50770->127.0.0.1:5002: wsarecv: An existing connection was forcibly closed by the remote host.
 No ongoing auctions, starting one now
 2024/11/25 15:20:38 Enter command: 
 bid 1
-2024/11/25 15:20:41 Error from node 1: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing: dial tcp [::1]:5002: connectex: No connection could be made because the target machine actively refused it."
 Bid Successful!
 2024/11/25 15:20:41 Enter command: 
 bid 2
-2024/11/25 15:20:51 Error from node 1: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing: dial tcp [::1]:5002: connectex: No connection could be made because the target machine actively refused it."
 Your bid is lower than current bid
 2024/11/25 15:20:51 Enter command:
 result
-2024/11/25 15:20:55 Error fetching results from node 1: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing: dial tcp [::1]:5002: connectex: No connection could be made because the target machine actively refused it."
 An auction is ongoing & the current highest bid is: 2  
 2024/11/25 15:20:55 Enter command:
 bid 3
-2024/11/25 15:21:04 Error from node 1: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing: dial tcp [::1]:5002: connectex: No connection could be made because the target machine actively refused it."
 Bid Successful!
 2024/11/25 15:21:04 Enter command:
 
@@ -68,7 +63,6 @@ User ID = 2
 Wilkommen to ze bidding hall.
 2024/11/25 15:20:35 Enter command: 
 bid 2
-2024/11/25 15:20:46 Error from node 1: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing: dial tcp [::1]:5002: connectex: No connection could be made because the target machine actively refused it."
 Bid Successful!
 2024/11/25 15:20:46 Enter command: 
 

@@ -42,7 +42,7 @@ func main(){
 }
 
 func SetupNode(nodeid int, addr int){
-	fmt.Println("trying to setup " + strconv.Itoa(addr)+ "..." )
+	log.Println("trying to setup " + strconv.Itoa(addr)+ "..." )
 	
 	n := &Node{
 		nodeID:         0,
@@ -62,7 +62,7 @@ func SetupNode(nodeid int, addr int){
 	grpcServer := grpc.NewServer()
 	pb.RegisterActionhouseServer(grpcServer, n)
 
-	fmt.Println("Server is running on: " + n.address)
+	log.Println("Server is running on: " + n.address)
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
@@ -77,7 +77,7 @@ func (n *Node) Bid(ctx context.Context, req *pb.Request) (*pb.Ack, error){
 
 	}
 	if(*NodeCrash){	
-		fmt.Println("Sending error >:|")
+		log.Println("Sending error >:|")
 		os.Exit(418)
 		return &pb.Ack{},errors.New("Failed to place bid")
 	}
@@ -121,14 +121,14 @@ func (n *Node) auctionTimer() {
 		time.Sleep(1 * time.Second)
 		n.timer--
 
-		if(n.timer == 1){fmt.Println("1 Second left")}
-		if(n.timer == 2){fmt.Println("2 Seconds left")}
-		if(n.timer == 3){fmt.Println("3 Seconds left")}
-		if(n.timer == 4){fmt.Println("4 Seconds left")}
-		if(n.timer == 5){fmt.Println("5 Seconds left")}
-		if(n.timer == 10){fmt.Println("10 Seconds left")}
-		if(n.timer == 20){fmt.Println("20 Seconds left")}
-		if(n.timer == 50){fmt.Println("50 Seconds left")}
+		if(n.timer == 1){log.Println("1 Second left")}
+		if(n.timer == 2){log.Println("2 Seconds left")}
+		if(n.timer == 3){log.Println("3 Seconds left")}
+		if(n.timer == 4){log.Println("4 Seconds left")}
+		if(n.timer == 5){log.Println("5 Seconds left")}
+		if(n.timer == 10){log.Println("10 Seconds left")}
+		if(n.timer == 20){log.Println("20 Seconds left")}
+		if(n.timer == 50){log.Println("50 Seconds left")}
 
 	}
 	n.endAuction()
@@ -137,7 +137,7 @@ func (n *Node) auctionTimer() {
 // End the auction
 func (n *Node) endAuction() {
 	n.ongoingAuction = false
-	fmt.Printf("Auction ended. Winning bid: %d by user %d\n", n.bid, n.highestbidder)
+	log.Println(fmt.Sprintf("Auction ended.\n Winning bid: %d by user %d\n", n.bid, n.highestbidder))
 }
 
 // Reset auction timer
@@ -148,7 +148,7 @@ func (n *Node) resetAuctionTimer() {
 func (n *Node) Result(ctx context.Context, req *pb.Empty) ( *pb.Outcome, error) {
 	
 	if(*NodeCrash){	
-		fmt.Println("Sending error >:|")
+		log.Println("Sending error >:|")
 		os.Exit(418)
 		return &pb.Outcome{},errors.New("Failed to fetch result ")
 	}
